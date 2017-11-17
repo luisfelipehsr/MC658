@@ -23,20 +23,33 @@ var d{j in CENAS} >= 0, integer;
 
 /* ===> funcao objetivo */
 minimize custo: 
-     sum{i in ATORES} (l[i]-e[i]+1)*c[i]);
+    sum{i in ATORES} (l[i] - e[i] + 1 - sum[i])*c[i]);
 
 /* ===> restricoes */
+s.t. gravacaoUnicaCena{j in CENAS}:       
+       sum{k in CENAS} g[j,k] = 1;  
+    
+s.t. gravacaoUnicaDia{k in CENAS}:
+       sum{j in CENAS} g[j,k] = 1;
 
+s.t. diaGravacao{j in CENAS}:
+       d[j] = sum{k in CENAS} g[j,k]*k;
 
+s.t. primeiroDia{(i,j) in GRAVACOES: T[i,j] == 1}:
+       e[i] <= d[j];
+
+s.t. ultimoDia{(i,j) in GRAVACOES: T[i,j] == 1}:
+       d[j] <= l[i];
 
 /* resolve problema */
 solve;
 
 /* ===> imprime solucao (n valores inteiros separados por espaco, onde
 o j-esimo valor corresponde ao dia em que foi gravada a cena j) */
-
+for {j in CENAS} printf "%d ", d[j];
+printf '\n'
 
 /* ===> imprime custo da solucao encontrada */
-
+printf: "%d\n", custo;
 
 end;
