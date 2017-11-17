@@ -6,7 +6,7 @@ param m, integer, >= 1; /* quantidade de atores */
 /* matriz T */
 set ATORES := {1..m}; /* conjunto de indices de atores */
 set CENAS := {1..n};  /* conjunto de indices de dias de gravacao */
-set GRAVACOES, within CENAS cross CENAS;
+set GRAVACOES, within CENAS cross CENAS := setof{j in CENAS, k in CENAS} (j,k);
 param T{i in ATORES, j in CENAS};
 
 /* custo diário de espera */
@@ -23,7 +23,7 @@ var d{j in CENAS} >= 0, integer;
 
 /* ===> funcao objetivo */
 minimize custo: 
-    sum{i in ATORES} (l[i] - e[i] + 1 - sum[i])*c[i]);
+    sum{i in ATORES} ((l[i] - e[i] + 1 - s[i])*c[i]);
 
 /* ===> restricoes */
 s.t. gravacaoUnicaCena{j in CENAS}:       
@@ -35,10 +35,10 @@ s.t. gravacaoUnicaDia{k in CENAS}:
 s.t. diaGravacao{j in CENAS}:
        d[j] = sum{k in CENAS} g[j,k]*k;
 
-s.t. primeiroDia{(i,j) in GRAVACOES: T[i,j] == 1}:
+s.t. primeiroDia{i in ATORES, j in CENAS: T[i,j] == 1}:
        e[i] <= d[j];
 
-s.t. ultimoDia{(i,j) in GRAVACOES: T[i,j] == 1}:
+s.t. ultimoDia{i in ATORES, j in CENAS: T[i,j] == 1}:
        d[j] <= l[i];
 
 /* resolve problema */
@@ -47,9 +47,9 @@ solve;
 /* ===> imprime solucao (n valores inteiros separados por espaco, onde
 o j-esimo valor corresponde ao dia em que foi gravada a cena j) */
 for {j in CENAS} printf "%d ", d[j];
-printf '\n'
+printf '\n';
 
 /* ===> imprime custo da solucao encontrada */
-printf: "%d\n", custo;
+printf: "%d\n", (sum{i in ATORES}((l[i] - e[i] + 1 - s[i])*c[i]));
 
 end;
