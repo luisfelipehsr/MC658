@@ -16,14 +16,15 @@ param c{i in ATORES};
 param s{i in ATORES}:=sum{j in CENAS} T[i,j];
 
 /* ===> variaveis: */
-var e{i in ATORES} >= 0, integer;
-var l{i in ATORES} >= 0, integer;
+var e{i in ATORES} >= 0;
+var l{i in ATORES} >= 0;
 var g{(i,j) in GRAVACOES} >=0, binary;
-var d{j in CENAS} >= 0, integer;
+var d{j in CENAS} >= 0;
+var salario{i in ATORES} >= 0;
 
 /* ===> funcao objetivo */
 minimize custo: 
-    sum{i in ATORES} ((l[i] - e[i] + 1 - s[i])*c[i]);
+    sum{i in ATORES} (salario[i] - s[i]*c[i]);
 
 /* ===> restricoes */
 s.t. gravacaoUnicaCena{j in CENAS}:       
@@ -40,6 +41,15 @@ s.t. primeiroDia{i in ATORES, j in CENAS: T[i,j] == 1}:
 
 s.t. ultimoDia{i in ATORES, j in CENAS: T[i,j] == 1}:
        d[j] <= l[i];
+
+s.t. calculoSalario{i in ATORES}:
+       salario[i] = (l[i] - e[i] + 1) * c[i];
+
+s.t. minimo{i in ATORES}:
+       salario[i] >= s[i] * c[i];
+
+s.t. ordem{i in ATORES}:
+       l[i] >= e[i];
 
 /* resolve problema */
 solve;
