@@ -41,6 +41,9 @@ s.t. primeiroDia{i in ATORES, j in CENAS: T[i,j] == 1}:
 s.t. ultimoDia{i in ATORES, j in CENAS: T[i,j] == 1}:
        d[j] <= l[i];
 
+s.t. ordem{i in ATORES}:
+       e[i] <= l[i];
+
 /* resolve problema */
 solve;
 
