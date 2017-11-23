@@ -50,7 +50,5 @@ void BNB::run() {
 		solucao[i] = i + 1;
 
 	i = 666;
-	while(1) {
-		atualiza_solucao(solucao, i);
-	}
+	atualiza_solucao(solucao, i);
 }

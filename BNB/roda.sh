@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Parametros para interrupcao do programa
-TLIM_BNB=180  # Tempo de execucao do branch and bound
+TLIM_BNB=10  # Tempo de execucao do branch and bound
 TLIM_HEUR=30  # Tempo de execucao da heuristica
 TTOL=5        # Tolerancia final
 
