@@ -1,8 +1,10 @@
 /* arquivo principal do BNB */
-#include "BNB.h"
+#include "bnb.h"
 
-int main() {
-	int m, int n;
+using namespace std;
+
+int main(int argc, char** argv) {
+	int m, n;
 	vector<vector <int> > T;
 	
 	// Registra a funcao que trata o sinal
@@ -12,6 +14,8 @@ int main() {
 	recebe_entrada(argv[2], m, n, T);
 
 	// FAZ ALGO
+	BNB bnb(m, n, T);
+	bnb.run();
 	
 	return 0;
 }

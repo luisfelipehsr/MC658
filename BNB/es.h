@@ -2,11 +2,19 @@
 #ifndef __ES_H_INCLUDED__
 #define __ES_H_INCLUDED__
 
-#include <ifstream>
+#include <csignal>
+#include <cstdlib>
+#include <iostream>
+#include <vector>
+#include <fstream>
 #include <cstdio>
 
-void imprime_saida(vector<int> &melhor_solucao);
+void imprime_saida_bnb(std::vector<int> &melhor_solucao, int &custo,
+					   int &lim_inf, int &num_nos_exp);
 
-void recebe_entrada(string arquivo, int &m, int &n, vector<vector <int> > &T);
+void imprime_saida_heur(std::vector<int> &melhor_solucao, int &custo);
+
+void recebe_entrada(std::string arquivo, int &m, int &n,
+					std::vector<std::vector <int> > &T);
 
 #endif

@@ -1,4 +1,4 @@
-#include "BNB.h"
+#include "bnb.h"
 
 using namespace std;
 
@@ -14,16 +14,43 @@ void interrompe(int signum) {
 		}*/
 }
 
-void atualiza_solucao(const vector<int> &solucao, int custo) {
+// Construtor
+BNB::BNB(int &m, int &n, vector<vector< int> > &matriz) {
+	cenas = m;
+	atores = n;
+	T = matriz;
+}
+
+// Atualiza solucao
+void BNB::atualiza_solucao(vector<int> &solucao, int &custo) {
+	
     //escrevendo = 1;
     melhor_solucao = solucao;
     melhor_custo = custo;
     //escrevendo = 0;
+	
     if (pare == 1) {
         // Se estava escrevendo a solucao quando recebeu o sinal,
         // espera terminar a escrita e apenas agora imprime a saida e
         // termina
-        imprime_saida();
+		 lim_inf = 1111;
+		 num_nos_exp = 2222;
+		imprime_saida_bnb(melhor_solucao, melhor_custo, lim_inf, num_nos_exp);
         exit(0);
     }
+}
+
+// Executa branch and bound
+void BNB::run() {
+	vector<int> solucao;
+	int i;
+
+	solucao.resize(cenas);
+	for (i = 0; i < cenas; i++)
+		solucao[i] = i + 1;
+
+	i = 666;
+	while(1) {
+		atualiza_solucao(solucao, i);
+	}
 }
