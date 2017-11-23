@@ -16,14 +16,15 @@ param c{i in ATORES};
 param s{i in ATORES}:=sum{j in CENAS} T[i,j];
 
 /* ===> variaveis: */
-var e{i in ATORES} >= 0, integer;
-var l{i in ATORES} >= 0, integer;
+var e{i in ATORES} >= 0;
+var l{i in ATORES} >= 0;
 var g{(i,j) in GRAVACOES} >=0, binary;
-var d{j in CENAS} >= 0, integer;
+var d{j in CENAS} >= 0;
+var salario{i in ATORES} >= 0;
 
 /* ===> funcao objetivo */
 minimize custo: 
-    sum{i in ATORES} ((l[i] - e[i] + 1 - s[i])*c[i]);
+    sum{i in ATORES} (salario[i] - s[i]*c[i]);
 
 /* ===> restricoes */
 s.t. gravacaoUnicaCena{j in CENAS}:       
@@ -32,14 +33,21 @@ s.t. gravacaoUnicaCena{j in CENAS}:
 s.t. gravacaoUnicaDia{k in CENAS}:
        sum{j in CENAS} g[j,k] = 1;
 
-s.t. diaGravacao{j in CENAS}:
-       d[j] = sum{k in CENAS} g[j,k]*k;
 
 s.t. primeiroDia{i in ATORES, j in CENAS: T[i,j] == 1}:
-       e[i] <= d[j];
+       e[i] <= sum{k in CENAS} g[j,k]*k;
 
 s.t. ultimoDia{i in ATORES, j in CENAS: T[i,j] == 1}:
-       d[j] <= l[i];
+       sum{k in CENAS} g[j,k]*k <= l[i];
+
+s.t. calculoSalario{i in ATORES}:
+       salario[i] = (l[i] - e[i] + 1) * c[i];
+
+s.t. minimo{i in ATORES}:
+       salario[i] >= s[i] * c[i];
+
+s.t. ordem{i in ATORES}:
+       l[i] >= e[i];
 
 s.t. ordem{i in ATORES}:
        e[i] <= l[i];
@@ -49,7 +57,7 @@ solve;
 
 /* ===> imprime solucao (n valores inteiros separados por espaco, onde
 o j-esimo valor corresponde ao dia em que foi gravada a cena j) */
-for {j in CENAS} printf "%d ", d[j];
+for {j in CENAS} printf "%d ", (sum{k in CENAS} g[j,k]*k);
 printf '\n';
 
 /* ===> imprime custo da solucao encontrada */
