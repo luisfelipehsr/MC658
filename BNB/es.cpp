@@ -1,17 +1,6 @@
-#include <csignal>
-#include <cstdlib>
-#include <iostream>
-#include <vector>
+#include "es.h"
 
 using namespace std;
-
-// Flags para controlar a interrupcao por tempo
-volatile int pare = 0;       // Indica se foi recebido o sinal de interrupcao
-volatile int escrevendo = 0; // Indica se estah atualizando a melhor solucao
-
-// Variaveis para guardar a melhor solucao encontrada
-
-int melhor_custo;
 
 void imprime_saida(vector<int> &melhor_solucao) {
     // Lembre-se: a primeira linha da saida deve conter n inteiros,
@@ -22,5 +11,32 @@ void imprime_saida(vector<int> &melhor_solucao) {
     cout << endl << melhor_custo << endl;
 }
 
+void recebe_entrada(string arquivo, int &m, int &n, vector<vector <int> > &T) {
+	int entrada, i, j;
 
+	// abre arquivo e verifica
+	ifstream meuArquivo (arquivo, ios::in);
+	if (!meuArquivo.is_open()) {
+		cout << "Erro na abertura do arquivo" << endl;
+		exit(0);
+	}
 
+	// ajusta tamanho dos vetores
+	T.resize(m);
+	for (i = 0; i < m; i++)
+		T[i].resize(n);
+
+	// grava valores do arquivo de entrada
+    scanf("%d", &entrada);
+	m = entrada;
+	scanf("%d", &entrada);
+	n = entrada;
+	for (i = 0; i < m; i++) {
+		for (j = 0; j < n; j++) {
+			scanf("%d", &entrada);
+			T[i][j] = entrada;
+		}
+	} // fim fors
+
+	meuArquivo.close();
+}
