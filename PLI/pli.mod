@@ -47,9 +47,6 @@ s.t. minimo{i in ATORES}:
        salario[i] >= s[i] * c[i];
 
 s.t. ordem{i in ATORES}:
-       l[i] >= e[i];
-
-s.t. ordem{i in ATORES}:
        e[i] <= l[i];
 
 /* resolve problema */
