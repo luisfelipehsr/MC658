@@ -24,32 +24,30 @@ void recebe_entrada(const string arquivo, int &m, int &n, vector<vector <int> > 
 	
 	// abre arquivo e verifica
 	meuArquivo.open(arquivo.c_str());
-
-	cout << arquivo.c_str() << endl << m << endl << n << endl;
 	
 	if (!meuArquivo.is_open() || !meuArquivo.good()) {
 		cout << "Erro na abertura do arquivo" << endl;
 		exit(0);
 	}
+
+	// grava proporcoes da entrada
+	meuArquivo >> m >> n;
 	
 	// ajusta tamanho dos vetores
 	T.resize(m);
 	for (i = 0; i < m; i++)
 		T[i].resize(n);
 
-	// grava valores do arquivo de entrada
-    if(scanf("%d", &entrada))
-		m = entrada;
-	if(scanf("%d", &entrada))
-		n = entrada;
+	// grava matriz da entrada
 	for (i = 0; i < m; i++) {
 		for (j = 0; j < n; j++) {
-			if(scanf("%d", &entrada))
-				T[i][j] = entrada;
+			meuArquivo >> T[i][j];
+			//cout << T[i][j] << " ";
 		}
-	} // fim fors
+		//cout << endl;
+	}
 
-	cout << m << endl << n << endl;
+	//cout << m << endl << n << endl;
 
 	meuArquivo.close();
 }

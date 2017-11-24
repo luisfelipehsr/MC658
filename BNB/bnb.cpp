@@ -7,11 +7,6 @@ volatile int pare = 0; // Indica se foi recebido o sinal de interrupcao
 
 void interrompe(int signum) {
     pare = 1;
-    /*if (escrevendo == 0) {
-        // Se nao estava escrevendo a solucao, pode imprimir e terminar
-        imprime_saida();
-        exit(0);
-		}*/
 }
 
 // Construtor
@@ -23,12 +18,15 @@ BNB::BNB(int &m, int &n, vector<vector< int> > &matriz) {
 
 // Atualiza solucao
 void BNB::atualiza_solucao(vector<int> &solucao, int &custo) {
-	
-    //escrevendo = 1;
+
+	/************************* ATENCAO *******************************/
+	/* O programa deve parar o mais rapido possivel ao receber o sinal,
+	 * portanto eh preciso uma politica de que em certos momentos ele
+	 * deve checar se deve parar atraves da variavel PARE.            */
+
     melhor_solucao = solucao;
     melhor_custo = custo;
-    //escrevendo = 0;
-	
+	pare = 1;
     if (pare == 1) {
         // Se estava escrevendo a solucao quando recebeu o sinal,
         // espera terminar a escrita e apenas agora imprime a saida e
