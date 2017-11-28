@@ -1,8 +1,30 @@
 #include "es.h"
 
+class Vetor_Noh {
+ private:
+	std::vector<Noh> vetor;
+	int tamanho;
+	int fim;
+ public:
+	Vetor_Noh(int tamanho_desejado);
+	Noh at(int index);
+	void adiciona_noh (int index, 
+	
+};
+
+class Vetor_Int {
+ private:
+	std::vector<Int> vetor;
+ public:
+	Vetor_Int(int size);
+	int at(int index);
+	
+};
+
 class Noh {
 	int cena;
 	int dia;
+	int limitante;
 	std::vector<int> dias_anteriores;
 
  public:
@@ -17,7 +39,8 @@ class BNB {
 	int num_nos_exp;
 	int lim_inf;
 	std::vector<std::vector<int> > T;
-	std::vector<Noh> noh_ativos;
+	std::vector<Noh> noh_gerados;
+	std::vector<int> noh_ativos;
 	
 	int escolhe_noh();
 	void explora_noh(int noh_escolhido);
