@@ -8,6 +8,7 @@
 #include <vector>
 #include <fstream>
 #include <cstdio>
+#include <list>
 
 void imprime_saida_bnb(std::vector<int> &melhor_solucao, int &custo,
 					   int &lim_inf, int &num_nos_exp);

@@ -15,6 +15,9 @@ int main(int argc, char** argv) {
 	entrada = string(argv[1]);
 	recebe_entrada(argv[1], m, n, T);
 
+	// Pode utilizar heuristica aqui. Envolve alterar bnb para aceitar tambem
+	// um lower bound inicial na construcao.
+	
 	// FAZ ALGO
 	BNB bnb(m, n, T);
 	bnb.run();
