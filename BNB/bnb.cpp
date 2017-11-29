@@ -172,29 +172,43 @@ int calcula_limitante(int cena, int dia, std::vector<int> &anteriores,
 
 // Executa branch and bound
 void BNB::run() {
-	int i, custo, cena, dia;
+	int i, j, custo, cena, dia, novaCena, diaMedio, diaFinal;
 	Noh explorado, filho;
 	vector<int> vectorVazio;
-	vector<int> ant;
-	vector<int> post;
 
-	vectorVazio.clear();
-	ant.clear();
-	post.clear();
-	cena = 0;
-	dia = 0;
-
+	vectorVazio.clear(); /* utilizado para garantir vetor vazio */
+ 
 	total_noh++;
 	explorado = Noh(cena,dia,dia+1,vectorVazio,vectorVazio);
 	ativos.insere(explorado);
+
+	diaMedio = (dias / 2) - 1;
+	diaFinal = diaMedio + (dias % 2);
 	
 	while(!ativos.vazio()) {
-		/* Toma um noh ativo */
+		/* Escolhe um noh ativo e o remove da fila */
 		explorado = escolhe_noh();
-		cout << "Noh: " << explorado.dia << " " << explorado.cena << " " << explorado.anteriores.size() << endl;
+
+		/*
+		  cout << "Noh: " << explorado.dia << " " << explorado.cena << " " << explorado.anteriores.size() << endl;*/
+		
 		/* Gera filhos e os testa */
-		dia = explorado.dia + 1;
-		cena = explorado.dia + 1;
+	    for (i = 0; i < cenas, i++) {
+			novaCena = 1;
+			if (i == explorado.cena)
+				novaCena = 0;
+			for (j = 0; j < explorado.anteriores.size(); j++) {
+				if (explorado.anteriores[j] == i)
+					novaCena = 0;
+			}
+			for (j = 0; j < explorado.posteriores.size(); j++) {
+				if (explorado.posteriores[j] == i)
+					novaCena = 0;
+			}
+
+			if (novaCena) {
+				explorado.anteriores.push_back(i);
+				
 		
 	    explorado.anteriores.push_back(int(explorado.cena));
 		for (i = 0; i < explorado.anteriores.size(); i++)
