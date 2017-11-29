@@ -1,0 +1,33 @@
+%%% imecclogo.sty - Logotipo do IMECC
+
+\NeedsTeXFormat{LaTeX2e}
+\RequirePackage{xkeyval}
+\ProvidesPackage{imecclogo}[2011/01/31 Macros for typesetting the IMECC logo]
+
+%\DeclareOptionX{mag}[1000]{\def\imecclogo@mag{#1}}
+
+%\ExecuteOptionsX{mag=1000}
+%\ProcessOptionsX
+
+%\font\imeccfont=imecc \ifx\imecclogo@mag\@empty\else scaled \imecclogo@mag\fi
+
+\font\imeccfont@tiny=imecc scaled 481
+\font\imeccfont@scriptsize=imecc scaled 578
+\font\imeccfont@footnotesize=imecc scaled 694
+\font\imeccfont@small=imecc scaled 833
+\font\imeccfont@normalsize=imecc
+\font\imeccfont@large=imecc scaled 1200
+\font\imeccfont@Large=imecc scaled 1440
+\font\imeccfont@huge=imecc scaled 1728
+\font\imeccfont@Huge=imecc scaled 2074
+
+\newdimen\imf@height \newdimen\imf@width
+\newcommand{\setcurrentimeccfont}[1]{%
+\global\def\currentimeccfont{\csname imeccfont@#1\endcsname}%
+\setbox0=\hbox{\currentimeccfont IMECC}%
+\imf@height=1.2\ht0 \imf@width=1.2\wd0}
+
+\DeclareRobustCommand{\imecclogotop}[1][normalsize]{{\setcurrentimeccfont{#1}\currentimeccfont\char127}}
+\DeclareRobustCommand{\imecclogo}[1][normalsize]{\setcurrentimeccfont{#1}\currentimeccfont\rlap{IMECC}\raisebox{\the\imf@height}{\imecclogotop[#1]}}
+
+\endinput

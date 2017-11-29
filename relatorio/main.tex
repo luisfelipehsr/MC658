@@ -1,0 +1,92 @@
+\documentclass[12pt]{article}
+% multirow allows you to combine rows in columns
+\usepackage{multirow}
+% tabularx allows manual tweaking of column width
+\usepackage{tabularx}
+% longtable does better format for tables that span pages
+\usepackage{longtable}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage{latexsym}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\renewcommand{\O}[1]{$\mathcal{O}(#1)$}
+\usepackage[T1]{fontenc} 
+\usepackage [utf8] {inputenc}
+\title{\textbf{Relatório MC658\\\large Problema do Planejamento de Cronograma com Custo de Espera Mínimo}}
+\author{Luís Felipe Hamada Serrano 147091\\Raphael Marques Franco 035501\\\\ Universidade de Campinas}
+
+\begin{document}
+
+\maketitle 
+\today{}
+% * <poli.unicamp@gmail.com> 2017-11-21T04:55:57.586Z:
+%
+% ^.
+% * <poli.unicamp@gmail.com> 2017-11-21T04:55:53.848Z:
+%
+% ^.
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Introdução}
+
+blablablabla
+
+\newpage
+\section{Heurística}
+
+\newpage
+\section{Programação Linear Inteira}
+\subsection{Modelo}
+\[
+	\begin{array}{r@{}r@{}r@{}l}
+    \textbf{Função objetivo:}&\qquad 
+	H =\text{min}\; \displaystyle\sum_{i\in Atores} {(l_i - e_i+1- s_i)*c_i}\\\\
+    \textbf{sujeitos às restrições:}\\ 
+   \textit{Cenas: (cena tem um único dia escolhido)} &\forall j \in Cenas: \;\displaystyle\sum_{k \in Cenas} {g_{j,k} = 1} & \\\\
+   \textit{Dias: (dia tem uma única cena escolhida) }&\forall k \in Cenas: \;\displaystyle\sum_{j \in Cenas} {g_{j,k} = 1} & \\\\
+\textit{Gravação: (dia da gravação da cena j)}&\forall j \in Cenas:\; d_j=\displaystyle\sum_{k \in Cenas} {g_{j,k}*k} & \\\\
+\textit{Gravação inicial: }\\&\forall i \in Atores\text{ e }\forall  j\in Cenas \text{ e } T_{i,j} = 1:\; e_i \leq d_j & \\\\ 
+\textit{Gravação final: }\\&\forall i \in Atores\text{ e }\forall  j\in Cenas \text{ e } T_{i,j} = 1:\; d_j \leq l_i & \\\\      
+Cenas = \{1, \dots ,n\} ,\:
+Atores = \{1, \dots ,m\} ,c_i \in C\:
+&\\
+g_{j,k}\;,\; T_{i,j} \in \{0,1\},\:e_i \;,\; l_i\;,\; d_i\;,\; s_i \in Cenas \:
+&\\
+    	\end{array}
+\] 
+\subsection{Nomenclatura}
+\textbf{Variavéis de Decisão}
+\begin{itemize}
+  \item $l_i$ : último dia escolhido para atuação do ator i;
+  \item $e_i$ : primeiro dia escolhido para atuação do ator i;
+  \item $g_{j,k}$ : variável binária que indica 1, se a cena j sucede imediamente após a cena k ou 0, caso contrário;
+  \item $d_j$ : dia de gravação da cena j.
+\end{itemize}
+\newpage
+\textbf{Parâmetros}
+\begin{itemize}
+  \item $C$ : vetor de custos pagos para cada um dos m atores na locação;
+  \item $c_i$ : elemento do vetor $C$ que indica custo pago por dia de atuação ou espera em locação ao ator i;
+  \item $s_i$ : total de dias de atuação do ator i na locação;
+  \item $T_{i,j}$ : é um elemento da matriz T e indica se o ator i participa da cena j, 1, em caso afirmativo e 0, caso contrário.
+  
+  
+\end{itemize}
+
+\newpage
+\section{Branch and Bound}
+
+
+\vfill
+
+\begin{thebibliography}{1}
+\bibitem{s} Efternamn, Namn, (År). Titel. Företag/Förening/Anstalt/Tidsskrift
+\end{thebibliography} 
+\newpage
+\appendix
+\end{document}
+

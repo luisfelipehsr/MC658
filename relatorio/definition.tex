@@ -1,0 +1,95 @@
+%Preâmbulo
+\documentclass[12pt,a4paper]{article}
+%PACOTE DO IMECC
+\usepackage{centernot}
+\usepackage{logo-unicamp}
+\usepackage{alltt}
+\usepackage{wrapfig}
+\usepackage{listings}
+\usepackage{subfloat}
+\usepackage{url}
+\usepackage{cite}
+\usepackage{multirow}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+\usepackage[portuguese]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[lofdepth]{subfig}
+\usepackage{listingsutf8}%linguagem de programação
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+\usepackage{wrapfig}
+\graphicspath{ {imagens/} } 
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\usepackage[right=2.5cm,left=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{indentfirst}
+\usepackage{float}
+\usepackage{enumerate}
+\usepackage{marginnote}
+%REDEFINE O COMANDO RESUMO
+\renewcommand\thesubsubsection{\Roman{subsubsection}} 
+\newcommand{\resumo}[2]{\noindent{\textsl{\space#1: }#2}\\}
+\usepackage[hidelinks]{hyperref}
+%Preparando para o PSEUDOCODIGO
+\usepackage{caption}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\makeatletter
+\algnewcommand{\LineComment}[1]{\Statex \hskip\ALG@thistlm \(\triangleright\) #1}
+\makeatother
+\makeatletter
+\renewcommand{\ALG@name}{Algoritmo}
+\makeatother
+\makeatletter
+\renewcommand{\listalgorithmname}{Lista de Algoritmos}
+\makeatother    
+% Declaracoes em Português
+\floatname{algorithm}{Algoritmo}
+\DeclareCaptionLabelFormat{something}{#2.#1.}
+\makeatletter
+ \renewcommand{\algorithmicrequire}{\textbf{\color{blue}{Entrada: }}}
+ \renewcommand{\algorithmicensure}{\textbf{\color{violet}{Saída: }}}
+ \algrenewcommand\algorithmicend{\textbf{fim}}
+ \algrenewcommand\algorithmicdo{\textbf{faça}}
+ \algrenewcommand\algorithmicwhile{\textbf{enquanto}}
+ \algrenewcommand\algorithmicfor{\textbf{para}}
+ \algrenewcommand\algorithmicif{\textbf{se}}
+ \algrenewcommand\algorithmicthen{\textbf{então}}
+ \algrenewcommand\algorithmicelse{\textbf{senão}}
+ \algrenewcommand\algorithmicreturn{\textbf{devolve}}
+ \algrenewcommand\algorithmicfunction{\textbf{função}}
+ \algrenewcommand\algorithmicprocedure{\textbf{procedimento}}
+% % Rearranja os finais de cada estrutura
+ \algrenewtext{EndWhile}{\algorithmicend\ \algorithmicwhile}
+ \algrenewtext{EndFor}{\algorithmicend\ \algorithmicfor}
+ \algrenewtext{EndIf}{\algorithmicend\ \algorithmicif}
+ \algrenewtext{EndFunction}{\algorithmicend\ \algorithmicfunction}
+% O comando For, a seguir, retorna 'para #1 -- #2 até #3 faça'
+\algnewcommand\algorithmicto{\textbf{até}}
+\algrenewtext{For}[3]%
+{\algorithmicfor\ #1 $\gets$ #2 \algorithmicto\ #3 \algorithmicdo}
+\makeatother 
+%Pacote para colocaração de código no uso do MINTED
+\usepackage{footnote}
+\usepackage{etoolbox}
+\usepackage{tcolorbox}
+\tcbuselibrary{minted,skins}
+\newtcblisting{myc}{
+  listing engine=minted,
+  colback=bg,
+  colframe=black!70,
+  listing only,
+  minted style=colorful,
+  minted language=c,
+  minted options={linenos=true,texcl=true},
+  left=1mm,
+}
+\renewcommand\listingscaption{Implementação}
+\renewcommand\listoflistingscaption{Lista de Implementações}
+\author{Raphael Marques Franco}

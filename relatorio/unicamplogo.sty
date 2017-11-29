@@ -1,0 +1,41 @@
+%%% unicamplogo.sty - Logotipo da Unicamp
+
+\NeedsTeXFormat{LaTeX2e}
+\RequirePackage{xkeyval}
+\ProvidesPackage{unicamplogo}[2011/01/31 Macros for typesetting the Unicamp logo]
+
+\font\unicampfont@tiny=unicamp scaled 481
+\font\unicampfont@scriptsize=unicamp scaled 578
+\font\unicampfont@footnotesize=unicamp scaled 694
+\font\unicampfont@small=unicamp scaled 833
+\font\unicampfont@normalsize=unicamp
+\font\unicampfont@large=unicamp scaled 1200
+\font\unicampfont@Large=unicamp scaled 1440
+\font\unicampfont@huge=unicamp scaled 1728
+\font\unicampfont@Huge=unicamp scaled 2074
+
+\newdimen\uf@charheight \newdimen\uf@width \newdimen\uf@logodepth
+\newcommand{\setcurrentunicampfont}[1]{%
+\global\def\currentunicampfont{\csname unicampfont@#1\endcsname}%
+\setbox0=\hbox{\currentunicampfont\char127}%
+\uf@logodepth=\dp0%
+\setbox0=\hbox{\currentunicampfont UNICAMP}%
+\uf@charheight=2\ht0 \uf@width=1.1\wd0}
+
+\newcommand{\unicamplogox}[2][normalsize]{{\csname unicampfont@#1\endcsname#2}}
+
+% Normal logo
+\providecommand\unicamplogo[1][normalsize]{\setcurrentunicampfont{#1}\unicamplogo@ulbld{\char127}}
+\providecommand\unicamplogol[1][normalsize]{\setcurrentunicampfont{#1}\unicamplogo@lbld{\char127}}
+
+% Outlined logo
+\providecommand\cunicamplogo[1][normalsize]{\setcurrentunicampfont{#1}\unicamplogo@ulbld{\char128}}
+\providecommand\cunicamplogol[1][normalsize]{\setcurrentunicampfont{#1}\unicamplogo@lbld{\char128}}
+
+%\newcommand{\unicamplogo@char}[1]{\currentunicampfont#1}
+\newcommand{\unicamplogo@label}{\currentunicampfont UNICAMP}
+
+\newcommand{\unicamplogo@lbld}[1]{\rlap{\makebox[\the\uf@width]{\unicamplogo@label}}\raisebox{\the\uf@charheight}{\makebox[\the\uf@width]{\raisebox{\the\uf@logodepth}{\currentunicampfont#1}}}}
+
+\newcommand{\unicamplogo@ulbld}[1]{\raisebox{\the\uf@logodepth}{\currentunicampfont#1}}
+\endinput

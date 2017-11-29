@@ -1,0 +1,49 @@
+\section{Programação Linear Inteira}
+% * <poli.unicamp@gmail.com> 2017-11-21T14:41:48.840Z:
+% 
+% vou retirar a variável de decisão d
+% 
+% ^.
+\subsection{Modelo}
+%\[
+\begin{align}
+    \textbf{Função objetivo:}\hspace*{3cm} 
+	H =\text{min}\; \displaystyle\sum_{i\in Atores} {(l_i - e_i+1- s_i)*c_i}\\\nonumber\\ \nonumber  
+ 	\textbf{Sujeitos às restrições:}\hspace*{8,65cm} \nonumber \\
+ \textit{Cenas: (cena tem um único dia escolhido)}\hspace*{0,295cm} \forall j \in Cenas: \;\displaystyle\sum_{k \in Cenas} {g_{j,k} = 1}  \\\nonumber \\  \textit{Dias: (dia tem uma única cena escolhida) }\hspace*{0,275cm} \forall k \in Cenas: \;\displaystyle\sum_{j \in Cenas} {g_{j,k} = 1}  \\\nonumber \\
+%\textit{Gravação: (dia da gravação da cena j)}\;\forall j \in Cenas:\; %d_j=\displaystyle\sum_{k \in Cenas} {g_{j,k}*k}  \\\nonumber\\
+\textit{Gravação inicial do ator i presente em alguma cena j: }\hspace*{3,25cm}\nonumber \\
+\forall i \in Atores\text{ e }\forall  j\in Cenas \text{ e } T_{i,j} = 1:\; e_i \leq \displaystyle\sum_{k \in Cenas} {g_{j,k}*k}   \\\nonumber \\ 
+\textit{Gravação final do ator i presente em alguma cena j: }\hspace*{3,50cm}\nonumber \\
+\forall i \in Atores\text{ e }\forall  j\in Cenas \text{ e } T_{i,j} = 1:\; \displaystyle\sum_{k \in Cenas} {g_{j,k}*k}  \leq l_i &  \\\nonumber\\   \nonumber    
+Cenas = \{1, \dots ,n\} ,\:
+Atores = \{1, \dots ,m\} ,c_i \in C\:
+\nonumber \\
+%removi  d_i\;,
+g_{j,k}\;,\; T_{i,j} \in \{0,1\},\:e_i \;,\; l_i\;,\; s_i \;\in Cenas \nonumber  \:
+\nonumber \\ \nonumber
+\end{align}
+%\] 
+\subsection{Nomenclatura}
+\textbf{Variavéis de Decisão}
+\begin{itemize}
+  \item $e_i$ : primeiro dia escolhido para atuação do ator i;
+  \item $l_i$ : último dia escolhido para atuação do ator i;
+  \item $g_{j,k}$ : variável binária que indica 1, se a cena j sucede imediamente após a cena k ou 0, caso contrário;
+  %\item $d_j$ : dia de gravação da cena j.
+\end{itemize}
+\newpage
+\textbf{Parâmetros}
+\begin{itemize}
+  \item $C$ : vetor de custos pagos para cada um dos m atores na locação;
+  \item $c_i$ : elemento do vetor $C$ que indica custo pago por dia de atuação ou espera em locação ao ator i;
+  \item $s_i$ : total de dias de atuação do ator i na locação;
+  \item $T_{i,j}$ : é um elemento da matriz T e indica se o ator i participa da cena j, 1, em caso afirmativo e 0, caso contrário.
+  
+\end{itemize}
+\subsection{Resultados}
+Vamos descrever algo referente ao modelo escrito em mathprog com os testes disponibilizados:\\
+\begin{itemize}
+\item Encontrou solução?
+\item Tempo para encontra solução em função do tamanho das instâncias?
+\end{itemize}
