@@ -8,8 +8,7 @@ class Vetor_Noh {
  public:
 	Vetor_Noh(int tamanho_desejado);
 	Noh at(int index);
-	void adiciona_noh (int index, 
-	
+	void adiciona_noh (int index, Noh noh_novo);
 };
 
 class Vetor_Int {
