@@ -168,8 +168,8 @@ int main () {
 	escolhido = noh_ativos.obtem_menor();
 	cout << escolhido.limite << endl;
 	noh_ativos.insere(Noh(6,6,0,exemplo));
-	escolhido = noh_ativos.obtem_menor();
-	cout << escolhido.limite << endl;
+	//escolhido = noh_ativos.obtem_menor();
+	//cout << escolhido.limite << endl;
 	
 	return 0;
 }
