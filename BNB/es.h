@@ -10,6 +10,7 @@ void imprime_saida_bnb(std::vector<int> &melhor_solucao, int &custo,
 void imprime_saida_heur(std::vector<int> &melhor_solucao, int &custo);
 
 void recebe_entrada(const std::string arquivo, int &m, int &n,
-					std::vector<std::vector <int> > &T);
+					std::vector<std::vector <int> > &T,
+					std::vector<int> &salario);
 
 #endif

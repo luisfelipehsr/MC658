@@ -25,7 +25,9 @@ void imprime_saida_heur(std::vector<int> &melhor_solucao, int &custo) {
 	cout << endl << custo << endl;
 }
 
-void recebe_entrada(const string arquivo, int &m, int &n, vector<vector <int> > &T) {
+void recebe_entrada(const string arquivo, int &m, int &n,
+					vector<vector <int> > &T,
+					vector<int> &salario) {
 	int entrada, i, j;
 	ifstream meuArquivo;
 	
@@ -55,6 +57,9 @@ void recebe_entrada(const string arquivo, int &m, int &n, vector<vector <int> > 
 	}
 
 	//cout << m << endl << n << endl;
+	salario.resize(n);
+	for (i = 0; i < n; i++)
+		meuArquivo >> salario[i];
 
 	meuArquivo.close();
 }

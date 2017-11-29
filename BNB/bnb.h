@@ -5,8 +5,10 @@
 
 class BNB {
 	int cenas;
+	int dias;
     int atores;
-
+	std::vector<int> salario;
+	std::vector<int> diasTrabalhando;
     std::vector<std::vector<int> > T;
     Fila_Prioridade_Noh ativos;
 
@@ -26,7 +28,8 @@ class BNB {
 
 	
 	// Construtor
-	BNB(int m, int n, int lb, std::vector<std::vector<int> > &matriz);
+	BNB(int m, int n, int lb, std::vector<std::vector<int> > &matriz,
+		std::vector<int> salario);
 
 	static void interrompe(int signum); /* sinal */
 	void run();
