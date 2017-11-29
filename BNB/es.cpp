@@ -48,9 +48,9 @@ void recebe_entrada(const string arquivo, int &m, int &n,
 		T[i].resize(n);
 
 	// grava matriz da entrada
-	for (i = 0; i < m; i++) {
-		for (j = 0; j < n; j++) {
-			meuArquivo >> T[i][j];
+	for (i = 0; i < n; i++) {
+		for (j = 0; j < m; j++) {
+			meuArquivo >> T[j][i];
 			//cout << T[i][j] << " ";
 		}
 		//cout << endl;
