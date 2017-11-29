@@ -1,34 +1,5 @@
-#include "es.h"
-
-class Vetor_Noh {
- private:
-	std::vector<Noh> vetor;
-	int tamanho;
-	int fim;
- public:
-	Vetor_Noh(int tamanho_desejado);
-	Noh at(int index);
-	void adiciona_noh (int index, Noh noh_novo);
-};
-
-class Vetor_Int {
- private:
-	std::vector<Int> vetor;
- public:
-	Vetor_Int(int size);
-	int at(int index);
-	
-};
-
-class Noh {
-	int cena;
-	int dia;
-	int limitante;
-	std::vector<int> dias_anteriores;
-
- public:
-	Noh(int cena_noh, int dia_noh, std::vector<int> &dias_anteriores_noh);
-};
+#ifndef _BNB_H_
+#define _BNB_H_
 
 class BNB {
 	std::vector<int> melhor_solucao;
@@ -58,3 +29,5 @@ class BNB {
 
 
 void interrompe(int signum);
+
+#endif

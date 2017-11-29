@@ -1,4 +1,12 @@
+#include <csignal>
+#include <cstdlib>
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <cstdio>
+
 #include "bnb.h"
+#include "FilaPrioridade.h"
 
 using namespace std;
 

@@ -1,3 +1,10 @@
+#include <csignal>
+#include <cstdlib>
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <cstdio>
+
 #include "es.h"
 
 using namespace std;

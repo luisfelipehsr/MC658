@@ -1,14 +1,6 @@
 // guarda
-#ifndef __ES_H_INCLUDED__
-#define __ES_H_INCLUDED__
-
-#include <csignal>
-#include <cstdlib>
-#include <iostream>
-#include <vector>
-#include <fstream>
-#include <cstdio>
-#include <list>
+#ifndef _ES_H_INCLUDED_
+#define _ES_H_INCLUDED_
 
 void imprime_saida_bnb(std::vector<int> &melhor_solucao, int &custo,
 					   int &lim_inf, int &num_nos_exp);
