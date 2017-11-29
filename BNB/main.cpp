@@ -1,4 +1,9 @@
 /* arquivo principal do BNB */
+#include <csignal>
+#include <vector>
+#include <string>
+
+#include "es.h"
 #include "bnb.h"
 
 using namespace std;
@@ -9,7 +14,7 @@ int main(int argc, char** argv) {
 	string entrada;
 	
 	// Registra a funcao que trata o sinal
-	signal(SIGINT, interrompe);
+	signal(SIGINT, BNB::interrompe);
 
 	// Recebe entrada
 	entrada = string(argv[1]);
@@ -19,7 +24,7 @@ int main(int argc, char** argv) {
 	// um lower bound inicial na construcao.
 	
 	// FAZ ALGO
-	BNB bnb(m, n, T);
+	BNB bnb(m, n, -1, T);
 	bnb.run();
 	
 	return 0;

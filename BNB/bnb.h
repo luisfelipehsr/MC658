@@ -1,33 +1,35 @@
 #ifndef _BNB_H_
 #define _BNB_H_
 
+#include "filaPrioridade.h"
+
 class BNB {
-	std::vector<int> melhor_solucao;
-	int melhor_custo;
 	int cenas;
-	int atores;
-	int num_nos_exp;
-	int lim_inf;
-	std::vector<std::vector<int> > T;
-	std::vector<Noh> noh_gerados;
-	std::vector<int> noh_ativos;
-	
+    int atores;
+
+    std::vector<std::vector<int> > T;
+    Fila_Prioridade_Noh ativos;
+
+	// Metodos do BNB
 	int escolhe_noh();
-	void explora_noh(int noh_escolhido);
-	int calcula_limitante(int cena, int dia,
-						   std::vector<int> &dias_anteriores);
+	void explora_noh(Noh escolhido);
+	int calcula_limitante(int cena, int dia, std::vector<int> &anteriores,
+						  std::vector<int> &posteriores);
 	void obtemSolucao();
 	void atualiza_solucao(std::vector<int> &solucao, int &custo);
 	
  public:
-	BNB(int &m, int &n, std::vector<std::vector<int> > &matriz);
+    static std::vector<int> melhor_solucao;
+    static int melhor_custo;
+    static int num_nos_exp;
+    static int lim_sup;
 
+	
+	// Construtor
+	BNB(int m, int n, int lb, std::vector<std::vector<int> > &matriz);
 
+	static void interrompe(int signum); /* sinal */
 	void run();
 };
-
-
-
-void interrompe(int signum);
 
 #endif
