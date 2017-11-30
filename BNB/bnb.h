@@ -8,14 +8,14 @@ class BNB {
 	int dias;
     int atores;
 	std::vector<int> salario;
+	std::vector<int> diasAtuados;
     std::vector<std::vector<int> > T;
     Fila_Prioridade_Noh ativos;
 
 	// Metodos do BNB
 	Noh escolhe_noh();
 	void explora_noh(Noh escolhido);
-	int calcula_limitante(int cena, int dia, std::vector<int> &anteriores,
-						  std::vector<int> &posteriores);
+	void calcula_limitante(Noh &explorando);
 	void operaSolucao(Noh &noh_solucao);
 	int calculaCusto(std::vector<int> &sol);
 	void atualiza_solucao(std::vector<int> &solucao, int &custo);
