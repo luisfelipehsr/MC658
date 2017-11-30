@@ -13,7 +13,7 @@ void imprime_saida_bnb(std::vector<int> &melhor_solucao, int &custo,
 					   int &lim_inf, int &num_nos_exp) {
     // j-esimo inteiro indica o dia de gravacao da cena j!
     for (int j = 0; j < melhor_solucao.size(); j++)
-        cout << melhor_solucao[j] << " ";
+        cout << melhor_solucao[j] + 1 << " ";
 	// linha nao dita no enunciado?
 	cout << endl << custo << endl << lim_inf << endl << num_nos_exp << endl;
 }
