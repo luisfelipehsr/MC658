@@ -282,6 +282,5 @@ void BNB::run() {
 
 	} // fim while ativos nao vazio
 
-	while(1) {}
 	imprime_saida_bnb(melhor_solucao, melhor_custo, lim_sup, total_noh);
 }
