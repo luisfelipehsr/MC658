@@ -39,14 +39,32 @@ BNB::BNB(int m, int n, int ls, vector<vector< int> > &matriz,
 	cenas = m;
 	dias = cenas;
 	atores = n;
+
+	/* Limitante superior que pode ser fornecido pelo calculo 
+	 * feito anteriormente por uma heuristica */
 	if (ls != -1)
 		lim_sup = ls;
 	else
 		lim_sup = INT_MAX;
+
+	/* Matriz T das cenas Trabalhadas pelos atores */
 	T = matriz;
 	salario = salario_entrada;
 	ativos = Fila_Prioridade_Noh(1024); /* Aloca a fila */
     melhor_solucao.resize(cenas, 0);
+
+	/* Pre processa calculando os dias atuados por um ator j */
+	diasAtuados.resize(atores, 0);
+	for (j = 0; j < atores; j++)
+		for (i = 0; i < cenas; i++)
+			if (T[i][j] == 1)
+				diasAtuados[j]++;
+
+	/* Elimina atores que nao atuam em nenhuma cena */
+	dias
+
+	
+	
 	/*
 	diasTrabalhando = vector<int> (n, 0);
 	
@@ -157,7 +175,7 @@ void BNB::operaSolucao(Noh &noh_solucao) {
 		exit(0);
 	}
 
-	/* Obtem solucao do noh */
+	/* Obtem solucao do noh na forma de um vetor */
 	sol.resize(dias);
 	fim = noh_solucao.anteriores.size();
 	for (i = 0; i < fim; i++)
@@ -184,7 +202,41 @@ void BNB::operaSolucao(Noh &noh_solucao) {
 	}
 }
 
+/* Calcula limitante inferior de um certo noh explorando */
 void BNB::calcula_limitante(Noh &explorando) {
+	vector<int> primeiro(atores, -1);
+	vector<int> ultimo(atores, -1);
+	int i, j, achou, achou, dia;
+
+	/* O noh possui si mesmo, um conjunto de dias anteriores E e de posteriores
+	 * L. Calcula o primeiro dia que um ator j aparece em E e o ultimo dia em
+	 * que aparece em L. */
+	for (j = 0; j < atores; j++) {
+		dia = 0;
+		achou = 0;
+		while (dia < explorando.anteriores.size() && !achou) {
+			if (T[explorando.anteriores[dia]][j] == 1) {
+				primeiro[j] = dia;
+				achou = 1;
+			} else {
+				dia++;
+			}
+		}
+
+		dia = 0;
+		achou = 0;
+		while (dia < explorando.posteriores.size() && !achou) {
+			if (T[explorando.posteriores[dia]][j] == 1) {
+				ultimo[j] = dia;
+				achou = 1;
+			} else {
+				dia++;
+			}
+		}		
+	}
+
+	
+	
 	return;
 }
 	
@@ -200,8 +252,11 @@ void BNB::run() {
 	diaFinal = dias / 2;
 
 	/* Adiciona primeiro nivel da arvore */
-	for (i = 0; i < cenas; i++)
-		ativos.insere(Noh(i,0,0,vectorVazio,vectorVazio));
+	for (i = 0; i < cenas; i++) {
+		filho = Noh(i,0,0,vectorVazio,vectorVazio);
+		calcula_limitante(filho);
+		ativos.insere(filho);
+	}
 	total_noh += cenas;
 
 	//ativos.imprime();
@@ -209,68 +264,74 @@ void BNB::run() {
 	while(!ativos.vazio()) {
 		/* Escolhe um noh ativo e o remove da fila */
 		explorado = escolhe_noh();
-		/*
-		  cout << "Noh: " << explorado.dia << " " << explorado.cena << " " << explorado.anteriores.size() << endl;*/
+
+		/* Verifica se o noh ativo realmente deveria ser realizado */
+	    if (explorado.limite < lim_sup) {
+		    
 		
-		/* Gera filhos e os testa */
-	    for (i = 0; i < cenas; i++) {
-			/* filtra os valores possiveis para os filhos */
-			novaCena = 1;
-			if (i == explorado.cena)
-				novaCena = 0;
-			for (j = 0; j < explorado.anteriores.size(); j++) {
-				if (explorado.anteriores.at(j) == i)
+			/*
+			  cout << "Noh: " << explorado.dia << " " << explorado.cena << " " << explorado.anteriores.size() << endl;*/
+		
+			/* Gera filhos e os testa */
+			for (i = 0; i < cenas; i++) {
+				/* filtra os valores possiveis para os filhos */
+				novaCena = 1;
+				if (i == explorado.cena)
 					novaCena = 0;
-			}
-			for (j = 0; j < explorado.posteriores.size(); j++) {
-				if (explorado.posteriores.at(j) == i)
-					novaCena = 0;
-			}
-
-			/* caso seja um filho possivel */
-			if (novaCena) {
-				total_noh++;
-
-				/* estabelece dia do filho e cria seus anteriores e pos-
-				 * teriores */
-				if (explorado.dia < diaFinal) {
-					dia = dias - explorado.dia - 1;
-					explorado.anteriores.push_back(explorado.cena);
-				} else {
-					dia = dias - explorado.dia;
-					explorado.posteriores.push_back(explorado.cena);
+				for (j = 0; j < explorado.anteriores.size(); j++) {
+					if (explorado.anteriores.at(j) == i)
+						novaCena = 0;
+				}
+				for (j = 0; j < explorado.posteriores.size(); j++) {
+					if (explorado.posteriores.at(j) == i)
+						novaCena = 0;
 				}
 
-				/*
-				cout << "Filho, pai dia " << explorado.dia << ": ";
-				for (j = 0; j < explorado.anteriores.size(); j++)
-					cout << explorado.anteriores.at(j) << " ";
-				cout << "| " << i << " |" << " ";
-				for (j = explorado.posteriores.size() - 1; j >= 0; j--)
-					cout << explorado.posteriores.at(j) << " ";
-					cout << endl;*/
-				filho = Noh(i, dia, 0, explorado.anteriores,
-							explorado.posteriores);
+				/* caso seja um filho possivel */
+				if (novaCena) {
+					total_noh++;
+
+					/* estabelece dia do filho e cria seus anteriores e pos-
+					 * teriores. Os posteriores estao na ordem de adicao */
+					if (explorado.dia < diaFinal) {
+						dia = dias - explorado.dia - 1;
+						explorado.anteriores.push_back(explorado.cena);
+					} else {
+						dia = dias - explorado.dia;
+						explorado.posteriores.push_back(explorado.cena);
+					}
+
+					/*
+					  cout << "Filho, pai dia " << explorado.dia << ": ";
+					  for (j = 0; j < explorado.anteriores.size(); j++)
+					  cout << explorado.anteriores.at(j) << " ";
+					  cout << "| " << i << " |" << " ";
+					  for (j = explorado.posteriores.size() - 1; j >= 0; j--)
+					  cout << explorado.posteriores.at(j) << " ";
+					  cout << endl;*/
+					filho = Noh(i, dia, explorado.limite, explorado.anteriores,
+								explorado.posteriores);
 				
-				/* conserta noh anterior */
-				if (explorado.dia < diaFinal) {
-					explorado.anteriores.pop_back();
-				} else {
-					explorado.posteriores.pop_back();
-				}
+					/* conserta noh anterior */
+					if (explorado.dia < diaFinal) {
+						explorado.anteriores.pop_back();
+					} else {
+						explorado.posteriores.pop_back();
+					}
 
-				/* Opera nos filhos solucao ou adiciona a ativos */
-				if (filho.dia == diaFinal)
-					operaSolucao(filho);
-				else {
-					/* Estabelece limitante do filho e se preciso ama-
-					 * durece-o. */
-					calcula_limitante(filho);
-					if (filho.limite < melhor_custo)
-						ativos.insere(filho);
-				}
-			} // fim if novaCena
-		} // fim for filhos possiveis
+					/* Opera nos filhos solucao ou adiciona a ativos */
+					if (filho.dia == diaFinal)
+						operaSolucao(filho);
+					else {
+						/* Estabelece limitante do filho e se preciso ama-
+						 * durece-o. */
+						calcula_limitante(filho);
+						if (filho.limite < melhor_custo)
+							ativos.insere(filho);
+					}
+				} // fim if novaCena
+			} // fim for filhos possiveis
+		} // fim if lower bound < upper bound
 		/*
 	    explorado.anteriores.push_back(int(explorado.cena));
 		for (i = 0; i < explorado.anteriores.size(); i++)

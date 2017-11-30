@@ -8,6 +8,7 @@ class BNB {
 	int dias;
     int atores;
 	std::vector<int> salario;
+	std::vector<int> diasAtuados;
     std::vector<std::vector<int> > T;
     Fila_Prioridade_Noh ativos;
 

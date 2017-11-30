@@ -140,3 +140,11 @@ Resultados: bnb
 Instancia;Solucao;Custo;Lim. Inf.;Nos;Tempo
 e0806.txt;1 5 2 4 6 7 3 8 ;6969;2147483647;109600;10.00
 e1008.txt;8 2 10 3 6 1 5 7 4 9 ;6969;2147483647;9864100;10.02
+Resultados: bnb
+Instancia;Solucao;Custo;Lim. Inf.;Nos;Tempo
+e0806.txt;1 5 2 4 6 7 3 8 ;185;2147483647;109600;0.10
+e1008.txt;8 2 10 3 6 1 5 7 4 9 ;325;2147483647;9864100;5.48
+Resultados: bnb
+Instancia;Solucao;Custo;Lim. Inf.;Nos;Tempo
+e0806.txt;1 5 2 4 6 7 3 8 ;185;2147483647;109600;0.06
+e1008.txt;8 2 10 3 6 1 5 7 4 9 ;325;2147483647;9864100;5.58
