@@ -18,14 +18,14 @@ volatile int escrevendo = 0;
 vector<int> BNB::melhor_solucao;
 int BNB::melhor_custo = INT_MAX;
 int BNB::total_noh = 0;
-int BNB::lim_sup = 0;
+int BNB::lim_inf = INT_MAX;
 
 /* Funcao de interrupcao */
 void BNB::interrompe(int signum) {
     pare = 1;
 	melhor_custo = 6969;
 	if (escrevendo != 1) {
-		imprime_saida_bnb(melhor_solucao, melhor_custo, lim_sup, total_noh);
+		imprime_saida_bnb(melhor_solucao, melhor_custo, lim_inf, total_noh);
 		exit(0);
 	}
 }
@@ -35,10 +35,12 @@ void BNB::interrompe(int signum) {
 BNB::BNB(int m, int n, int ls, vector<vector< int> > &matriz,
 		 vector<int> salario_entrada) {
 	int i, j;
+	vector<int> vazios;
 	
 	cenas = m;
 	dias = cenas;
 	atores = n;
+	diaFinal = dias / 2; /* dia do ultimo nivel do bnb */
 
 	/* Limitante superior que pode ser fornecido pelo calculo 
 	 * feito anteriormente por uma heuristica */
@@ -53,27 +55,13 @@ BNB::BNB(int m, int n, int ls, vector<vector< int> > &matriz,
 	ativos = Fila_Prioridade_Noh(1024); /* Aloca a fila */
     melhor_solucao.resize(cenas, 0);
 
+	
 	/* Pre processa calculando os dias atuados por um ator j */
 	diasAtuados.resize(atores, 0);
 	for (j = 0; j < atores; j++)
 		for (i = 0; i < cenas; i++)
 			if (T[i][j] == 1)
 				diasAtuados[j]++;
-
-	/* Elimina atores que nao atuam em nenhuma cena */
-	dias
-
-	
-	
-	/*
-	diasTrabalhando = vector<int> (n, 0);
-	
-	for (j = 0; j < n; j++) {
-		for (i = 0; i < m; i++) {
-			if (T[i][j] == 1)
-				diasTrabalhando[i]++;
-		}
-		}*/
 }
 
 // Atualiza solucao
@@ -116,13 +104,6 @@ void BNB::explora_noh(Noh escolhido) {
 /* Calcula custo */
 int BNB::calculaCusto(vector<int> &sol) {
 	int i, j, custo, primeiro, ultimo, flag, diasContratados;
-	/*
-	for(j = 0; j < atores; j++) {
-		for (i = 0; i < cenas; i++) {
-			cout << T[i][j] << " ";
-		}
-		cout << endl;
-		}*/
 	
 	custo = 0;
 	/* Atravessa a matriz resultante */
@@ -153,10 +134,9 @@ int BNB::calculaCusto(vector<int> &sol) {
 		// Adiciona custo extra do ator j
 		if (primeiro != -1) {
 			diasContratados = ultimo - primeiro + 1;
-		    custo += diasContratados * salario[j];
+		    custo += (diasContratados - diasAtuados[j]) * salario[j];
 		}
-
-		//	cout << "Custo ator " << j << ": " << diasContratados*salario[j] << endl;
+		
 	} // fim for ator j
 
 	return custo;
@@ -186,11 +166,6 @@ void BNB::operaSolucao(Noh &noh_solucao) {
 	for (i = 0; i < tam; i++)
 		sol[fim+i] = noh_solucao.posteriores[tam-i-1];
 
-	/*
-	for (i = 0; i < sol.size(); i++)
-		cout << sol[i] << " ";
-	cout << endl; cout << noh_solucao.cena << endl;
-	*/
 	/* Avalia se eh melhor que a atual e a substitui se necessario */
 	custo = calculaCusto(sol);
 	if (custo < melhor_custo) {
@@ -204,52 +179,124 @@ void BNB::operaSolucao(Noh &noh_solucao) {
 
 /* Calcula limitante inferior de um certo noh explorando */
 void BNB::calcula_limitante(Noh &explorando) {
-	vector<int> primeiro(atores, -1);
-	vector<int> ultimo(atores, -1);
-	int i, j, achou, achou, dia;
+	vector<int> ant(atores, -1);
+	vector<int> ant_ultimo(atores, -1);
+	vector<int> post(atores, -1);
+	vector<int> post_primeiro(atores, -1);
+	vector<int> ant_dias(atores, 0);
+	vector<int> post_dias(atores, 0);
+	int i, j, achou, dia, limite1, limite2, limite3, limite4;
 
-	/* O noh possui si mesmo, um conjunto de dias anteriores E e de posteriores
-	 * L. Calcula o primeiro dia que um ator j aparece em E e o ultimo dia em
-	 * que aparece em L. */
+	limite1 = 0;
+	limite2 = 0;
+	limite3 = 0;
+	limite4 = 0;
+
+	/* O noh possui si mesmo, um conjunto de dias anteriores B e de posteriores
+	 * E. Calcula o primeiro dia que um ator j aparece em B e o ultimo dia em
+	 * que aparece em E. */
 	for (j = 0; j < atores; j++) {
+		
 		dia = 0;
 		achou = 0;
+		/* acha primeiro do lado esquerdo */
 		while (dia < explorando.anteriores.size() && !achou) {
 			if (T[explorando.anteriores[dia]][j] == 1) {
-				primeiro[j] = dia;
+				ant[j] = dia;
 				achou = 1;
-			} else {
-				dia++;
 			}
+			dia++;
+		}
+
+		dia--;
+		/* acha ultimo do lado esquerdo */
+		while (achou && dia < explorando.anteriores.size()) {
+			if (T[explorando.anteriores[dia]][j] == 1) {
+				ant_ultimo[j] = dia;
+				ant_dias[j]++;
+			}
+			dia++;
 		}
 
 		dia = 0;
 		achou = 0;
+		/* acha ultimo do lado direito */
 		while (dia < explorando.posteriores.size() && !achou) {
 			if (T[explorando.posteriores[dia]][j] == 1) {
-				ultimo[j] = dia;
+				post[j] = dias - dia - 1;
 				achou = 1;
-			} else {
-				dia++;
 			}
-		}		
+			dia++;
+		}
+		
+		dia--;
+		/* acha primeiro do lado direito */
+		while (achou && dia < explorando.posteriores.size()) {
+			if (T[explorando.posteriores[dia]][j] == 1) {
+				post_primeiro[j] = dias - dia - 1;
+				post_dias[j]++;
+			}
+			dia++;
+		}
+
+		//cout << "Ultimos" << post_primeiro[j]<<" "<<post[j]<<" "<<post_dias[j]<<endl;
+		
+	    /* correcoes com o dia atual s */
+		if (explorando.dia < diaFinal) {
+			if (T[explorando.cena][j] == 1) {
+	            ant_ultimo[j] = explorando.dia;
+				ant_dias[j]++;
+				if (ant_dias[j] == 1)
+					ant[j] = explorando.dia;
+			}
+		} else {
+			if (T[explorando.cena][j] == 1) {
+				post_primeiro[j] = explorando.dia;
+				post_dias[j]++;
+				if (post_dias[j] == 1)
+					post[j] = explorando.dia;
+			}
+		}
+	} // fim for ator j
+	
+	/* Calcula o custo do noh atual em relacao a E e L */
+	/* Calculo de K1, o custo dado por atores em B e E */
+	for (j = 0; j < atores; j++)
+		if (ant_dias[j] > 0 && post_dias[j] > 0) {
+			limite1 += (salario[j] * (post[j] - ant[j] + 1 - diasAtuados[j]));
+		}
+   
+	/* Calculo de K2 */
+	for (j = 0; j < atores; j++) {
+		if (ant_dias[j] > 0 && post_dias[j] == 0) {
+			limite2 += salario[j] *
+				(ant_ultimo[j] - ant[j] + 1 - ant_dias[j]);
+		}
+		else if (ant_dias[j] == 0 && post_dias[j] > 0) {
+			limite2 += salario[j] *
+				(post[j] - post_primeiro[j] + 1 - post_dias[j]);
+		}
 	}
 
-	
-	
-	return;
-}
-	
+	/* Calculo de K3 */
+	/* Calculo de K4 */
+
+	/* Soma os limitantes */
+	explorando.limite = limite1 + limite2 + limite3 + limite4;
+	if (explorando.limite < lim_inf)
+		lim_inf = explorando.limite;
+} // fim membro calcula_limitante
 	
 
 // Executa branch and bound
 void BNB::run() {
-	int i, j, custo, cena, dia, novaCena, diaMedio, diaFinal;
+	int i, j, custo, cena, dia, novaCena, diaMedio;
 	Noh explorado, filho;
 	vector<int> vectorVazio, ant, post;
 
+	char debug;
+
 	vectorVazio.clear(); /* utilizado para garantir vetor vazio */
-	diaFinal = dias / 2;
 
 	/* Adiciona primeiro nivel da arvore */
 	for (i = 0; i < cenas; i++) {
@@ -258,8 +305,6 @@ void BNB::run() {
 		ativos.insere(filho);
 	}
 	total_noh += cenas;
-
-	//ativos.imprime();
 	
 	while(!ativos.vazio()) {
 		/* Escolhe um noh ativo e o remove da fila */
@@ -267,10 +312,6 @@ void BNB::run() {
 
 		/* Verifica se o noh ativo realmente deveria ser realizado */
 	    if (explorado.limite < lim_sup) {
-		    
-		
-			/*
-			  cout << "Noh: " << explorado.dia << " " << explorado.cena << " " << explorado.anteriores.size() << endl;*/
 		
 			/* Gera filhos e os testa */
 			for (i = 0; i < cenas; i++) {
@@ -301,15 +342,8 @@ void BNB::run() {
 						explorado.posteriores.push_back(explorado.cena);
 					}
 
-					/*
-					  cout << "Filho, pai dia " << explorado.dia << ": ";
-					  for (j = 0; j < explorado.anteriores.size(); j++)
-					  cout << explorado.anteriores.at(j) << " ";
-					  cout << "| " << i << " |" << " ";
-					  for (j = explorado.posteriores.size() - 1; j >= 0; j--)
-					  cout << explorado.posteriores.at(j) << " ";
-					  cout << endl;*/
-					filho = Noh(i, dia, explorado.limite, explorado.anteriores,
+					/* Cria um noh filho */
+					filho = Noh(i, dia, 0, explorado.anteriores,
 								explorado.posteriores);
 				
 					/* conserta noh anterior */
@@ -332,16 +366,7 @@ void BNB::run() {
 				} // fim if novaCena
 			} // fim for filhos possiveis
 		} // fim if lower bound < upper bound
-		/*
-	    explorado.anteriores.push_back(int(explorado.cena));
-		for (i = 0; i < explorado.anteriores.size(); i++)
-			cout << explorado.anteriores.at(i);
-		cout << endl;
-		
-		filho = Noh(cena,dia,dia+1,explorado.anteriores,explorado.posteriores);*/
-
-
 	} // fim while ativos nao vazio
 
-	imprime_saida_bnb(melhor_solucao, melhor_custo, lim_sup, total_noh);
+	imprime_saida_bnb(melhor_solucao, melhor_custo, lim_inf, total_noh);
 }

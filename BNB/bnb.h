@@ -7,6 +7,8 @@ class BNB {
 	int cenas;
 	int dias;
     int atores;
+	int diaFinal;
+	int lim_sup;
 	std::vector<int> salario;
 	std::vector<int> diasAtuados;
     std::vector<std::vector<int> > T;
@@ -24,7 +26,7 @@ class BNB {
     static std::vector<int> melhor_solucao;
     static int melhor_custo;
     static int total_noh;
-    static int lim_sup;
+    static int lim_inf;
 
 	
 	// Construtor
