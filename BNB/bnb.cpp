@@ -74,13 +74,6 @@ void BNB::atualiza_solucao(vector<int> &sol, int &custo) {
 	/* corrige notacao de solucao */
 	for (i = 0; i < cenas; i++)
 		melhor_solucao[sol[i]] = i;
-
-	/*
-	cout << "Solucao melhor:";
-	for (i = 0; i < cenas; i++)
-		cout << melhor_solucao[i] << " ";
-		cout << endl;*/
-	//pare = 1; // DEBUG forca um pare
 	escrevendo = 0;
 	
     if (pare == 1) {
@@ -169,10 +162,6 @@ void BNB::operaSolucao(Noh &noh_solucao) {
 	/* Avalia se eh melhor que a atual e a substitui se necessario */
 	custo = calculaCusto(sol);
 	if (custo < melhor_custo) {
-		/*
-		for (i = 0; i < cenas; i++)
-			cout << sol[i] << " ";
-			cout << endl;*/
 		atualiza_solucao(sol, custo);
 	}
 }
@@ -238,8 +227,6 @@ void BNB::calcula_limitante(Noh &explorando) {
 			}
 			dia++;
 		}
-
-		//cout << "Ultimos" << post_primeiro[j]<<" "<<post[j]<<" "<<post_dias[j]<<endl;
 		
 	    /* correcoes com o dia atual s */
 		if (explorando.dia < diaFinal) {
