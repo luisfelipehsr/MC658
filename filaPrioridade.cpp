@@ -3,8 +3,7 @@
 #include <queue>
 #include <cstdlib>
 
-
-#include "test.h"
+#include "filaPrioridade.h"
 
 using namespace std;
 
@@ -14,20 +13,24 @@ Noh::Noh() {
 	cena = 0;
 	dia = 0;
 	limite = 0;
-	dias_anteriores.clear();
+	anteriores.clear();
+	posteriores.clear();
 }
 
 /* construtor Noh */
 Noh::Noh(int cena_noh, int dia_noh, int limite_noh,
-		vector<int> dias_anteriores_noh) {
+		 vector<int> &dias_anteriores, vector<int> &dias_posteriores) {
 		cena = cena_noh;
 		dia = dia_noh;
 		limite = limite_noh;
-		dias_anteriores = dias_anteriores_noh;
+		anteriores = dias_anteriores;
+		posteriores = dias_posteriores;
 }
 
+
 // classe Fila_Prioridade_Noh
-/* transforma a fila em heap a partir da posicao index */
+/* transforma a fila em heap a partir da posicao index.
+ * a chave de ordenacao eh o limitante inferior dos nohs */
 void Fila_Prioridade_Noh::minHeapify(int index) {
 	int esq, dir, menor, aux;
 
@@ -64,7 +67,15 @@ int Fila_Prioridade_Noh::pai(int index) {
 	return (index - 1)/2;
 }
 
-/* Construtor */
+/* Construtores */
+Fila_Prioridade_Noh::Fila_Prioridade_Noh() {
+	gerados.clear();
+	fila.clear();
+	capacidade = 0;
+	fim_fila = 0;
+	fim_gerados = 0;
+}
+
 Fila_Prioridade_Noh::Fila_Prioridade_Noh(int size) {
 	gerados.resize(size);
 	fila.resize(size);
@@ -107,7 +118,7 @@ void Fila_Prioridade_Noh::insere(Noh noh_novo) {
 		fila.resize(2*capacidade);
 		capacidade = 2*capacidade;
 			
-		cout << "Vector tamanho " << capacidade/2 << " foi aumentado para CAPACIDADE " << fila.capacity() << endl;
+		//cout << "Vector tamanho " << capacidade/2 << " foi aumentado para CAPACIDADE " << fila.capacity() << endl;
 	}
 } // fim insere_elemento
 		
@@ -121,9 +132,10 @@ Noh Fila_Prioridade_Noh::obtem_menor() {
 		exit(0);
 	}
 
+	/* Caso especial de fila com um unico elemento */
 	if (fim_fila == 1) {
 		fim_fila = fim_fila - 1;
-		return gerados[0];
+		return gerados[fila[0]];
 	}
 
 	/* salva primeiro elemento e poe o ultimo em seu lugar */
@@ -137,6 +149,13 @@ Noh Fila_Prioridade_Noh::obtem_menor() {
 	return gerados[menor_elemento];
 } // fim obtem_menor_elemento
 
+int Fila_Prioridade_Noh::vazio() {
+	if (fim_fila <= 0)
+		return 1;
+	else
+		return 0;
+}
+
 void Fila_Prioridade_Noh::imprime() {
 	int i, j, nivel;
 
@@ -144,7 +163,7 @@ void Fila_Prioridade_Noh::imprime() {
 	j = 0;
 	for (i = 0; i < fim_fila; i++) {
 		j++;
-		cout << gerados[fila[i]].limite << " ";
+		cout << gerados[fila[i]].cena << " ";
 		if (j == nivel) {
 			cout << endl;
 			nivel = nivel * 2;
@@ -156,26 +175,3 @@ void Fila_Prioridade_Noh::imprime() {
 	cout << endl;
 }
 // fim class Fila_Prioridade_Noh
-
-
-
-
-int main () {
-	vector<int> exemplo;
-    Fila_Prioridade_Noh noh_ativos  = Fila_Prioridade_Noh(64);
-	int i;
-	Noh escolhido;
-	
-	exemplo = vector<int>(3,100);
-	for (i = 0; i < 64; i++)
-	    noh_ativos.insere(Noh(6,6,64-i,exemplo));
-	escolhido = noh_ativos.obtem_menor();
-	cout << escolhido.limite << endl;
-	escolhido = noh_ativos.obtem_menor();
-	cout << escolhido.limite << endl;
-	noh_ativos.insere(Noh(6,6,0,exemplo));
-	//escolhido = noh_ativos.obtem_menor();
-	//cout << escolhido.limite << endl;
-	
-	return 0;
-}
